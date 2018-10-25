@@ -16,6 +16,7 @@
   "eslintConfig": {
     "extends": "react-app"
   },
+  "homepage" : "https://et-code-home.github.io/Game-of-Life/",
   "browserslist": [
     ">0.2%",
     "not dead",
