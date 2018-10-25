@@ -4,12 +4,31 @@ import './index.css';
 
   function Square(props) {
     return (
-      <button className="square" onClick={props.onClick} style={{backgroundColor:props.bgColor}} >
-        
-        {/* {props.value} */}
-        
+      <button className="square" onClick={props.onClick} style={{backgroundColor:props.bgColor}} >        
       </button>
     );
+  }
+
+  class Rules extends React.Component {
+    render() {
+        return (
+            <div>
+            <br/><br/><br/><br/><br/>
+            <h3 className="rule-header"> Rules </h3>
+            <ul className="rule-list">
+                <li>
+                    If a cell is <b>alive</b> and it has exactly 2 or 3 live neighbors, it <b>stays alive</b>.
+                </li>
+                <li>
+                    If a cell is <b>alive</b> and it has less than 2 or 4+ live neighbors, it <b>dies</b>.
+                </li>
+                <li>
+                    If a cell is <b>dead</b> and it has exactly 3 live neighbors, it <b>comes to life</b>.
+                </li>
+            </ul>
+            </div>
+        );
+    }
   }
 
   class Board extends React.Component {
@@ -160,6 +179,7 @@ import './index.css';
        
       return (
           <div className="top">
+            <h2> Conway's Game of life</h2>
                 <div className="status">{status}</div>
                 
                 <div className="board">
@@ -192,12 +212,13 @@ import './index.css';
     render() {
       return (
         <div className="sim">
-          <div className="sim-board">
-            <Board /> 
+          <div className="sim-main">
+            <Board /> <Rules />
+            
           </div>
           <div className="sim-about">
             <br /><br /><br />
-                About this Algorithm...
+                <h3>About this Algorithm...</h3>
             </div>
           <div className="sim-info">
             <div>{/* status */}</div>

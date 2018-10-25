@@ -48,3 +48,15 @@ ol, ul {
 .game-info {
   margin-left: 20px;
 }
+
+.rule-list {
+  margin-left: 70px;
+}
+
+.rule-header {
+  margin-left: 35px;
+}
+
+.sim-main {
+  display:flex; flex-direction:row;
+}
