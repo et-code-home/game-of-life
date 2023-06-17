@@ -15,6 +15,7 @@ export default function Rules () {
                     If a cell is <b>dead</b> and it has exactly 3 live neighbors, it <b>comes to life</b>.
                 </li>
             </ul>
+            <p>These rules define the birth, death, and survival of cells in the grid. The initial configuration of live and dead cells is set by the player or generated randomly. After that, the game evolves based on the rules, with each generation creating a new configuration of live and dead cells.</p>
         </div>
     );
 }

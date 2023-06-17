@@ -9,7 +9,6 @@ export default function Board () {
     const [simulationRunning, setSimulationRunning] = useState(false);
     const [generation, setGeneration] = useState(0);
     const [interval, setInterval] = useState(1000);
-    const [timeoutHandler, setTimeoutHandler] = useState(null);
         
     const buildNextGen = () => {
         var newSquares = squares.slice();
@@ -53,7 +52,9 @@ export default function Board () {
 
     useEffect(() => {
         window.setTimeout(() => {
-            if(simulationRunning) buildNextGen();
+            if(simulationRunning) {
+                buildNextGen();
+            }
         }, interval);
     }, [squares, generation]);
 
@@ -79,10 +80,13 @@ export default function Board () {
 
     const stopSim = () => {
         setSimulationRunning(false);
-        if (timeoutHandler) {
-            window.clearTimeout(timeoutHandler);
-            setTimeoutHandler(null);
-        }
+    }
+
+    const resetSim = () => {
+        stopSim();
+        setSize(10);
+        setSquares(Array(100).fill('white'));
+        setGeneration(0);
     }
 
     const changeGridSize = (event) => {
@@ -103,6 +107,7 @@ export default function Board () {
             console.log("Maximum board size is 16 x 16")
         }
         else {
+            resetSim();
             setSize(length);
             const cells = length * length;
             setSquares(Array(cells).fill('white'));
@@ -154,13 +159,12 @@ export default function Board () {
             numbers[i] = i;
         }
         const allRows = numbers.map((n) => createRows(n, num));
-        //{createRows(n, size )} );
         return allRows;
     }
    
     return (
         <div className="top">
-        <h2> Conway's Game of life</h2>
+        <h2> Conway's Game of Life</h2>
             <div className="status">{`Generation: ${generation}`}</div>
             
             <div className="board">
@@ -172,9 +176,10 @@ export default function Board () {
                 <SpeedDropdown onChange={changeSimSpeed}/>
                 <br />
 
-                Size  of  grid   <input defaultValue={size} size="8"
-                    onChange={changeGridSize} /> 
-                <br />
+                Size of grid <input defaultValue={size} size="8"
+                    onChange={changeGridSize} value={size} disabled={simulationRunning}/> 
+                
+                <br /><br />
 
                 {simulationRunning ?
                     <Button variant="danger"
@@ -182,7 +187,8 @@ export default function Board () {
                     <Button variant="success"
                         onClick={playSim}>▶ Play</Button>
                 }
-
+                <Button variant="secondary"
+                    onClick={resetSim} style={{marginLeft: "10px"}}>⟲ Reset</Button>
             </div>
         </div>
     );
