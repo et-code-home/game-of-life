@@ -4,7 +4,9 @@
   "private": true,
   "dependencies": {
     "ajv": "^6.5.4",
+    "bootstrap": "^5.3.0",
     "react": "^16.8.0",
+    "react-bootstrap": "^2.7.4",
     "react-dom": "^16.8.0",
     "react-scripts": "2.0.5"
   },

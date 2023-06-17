@@ -50,13 +50,18 @@ ol, ul {
 }
 
 .rule-list {
-  margin-left: 70px;
+  margin-left: 5px;
 }
 
-.rule-header {
-  margin-left: 35px;
+
+.about {
+  margin-top: 50px;
 }
 
-.sim-main {
-  display:flex; flex-direction:row;
+#rules {
+  margin-top: 50px;
+}
+
+#board {
+  margin-right: 35px;
 }

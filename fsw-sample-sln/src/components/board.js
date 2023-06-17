@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
+import Button from 'react-bootstrap/Button';
 import Square from './square.js';
+import SpeedDropdown from './speedDropdown.js';
 
 export default function Board () {
     const [size, setSize] = useState(10);
@@ -10,7 +12,6 @@ export default function Board () {
     const [timeoutHandler, setTimeoutHandler] = useState(null);
         
     const buildNextGen = () => {
-        console.log(generation)
         var newSquares = squares.slice();
 
         for(var i=0; i<squares.length; i++ ) {
@@ -46,7 +47,6 @@ export default function Board () {
         }
         
         // set Board's squares to newSquares
-        console.log(newSquares)
         setSquares(newSquares);
         setGeneration(generation + 1);
     }
@@ -87,13 +87,41 @@ export default function Board () {
 
     const changeGridSize = (event) => {
         const length = event.target.value;
-        setSize(length);
-        const cells = length * length;
-        setSquares(Array(cells).fill('white'));
+        if(length === "") {
+            console.log("Size cannot be empty")
+        }
+        else if(isNaN(length)) {
+            console.log("Please enter a number")
+        }
+        else if(!Number.isInteger(Number(length))) {
+            console.log("Decimals are not allowed - please enter an integer");
+        }
+        else if(length < 5) {
+            console.log("Minimum board size is 5 x 5")
+        }
+        else if(length > 16) {
+            console.log("Maximum board size is 16 x 16")
+        }
+        else {
+            setSize(length);
+            const cells = length * length;
+            setSquares(Array(cells).fill('white'));
+        }
       }
       
     const changeSimSpeed = (event) => {
-    setInterval(event.target.value);
+        if(event.target.value) {
+            switch(event.target.value){
+                case "slow":
+                    setInterval(2000);
+                    break;
+                case "fast":
+                    setInterval(500);
+                    break;
+                default:
+                    setInterval(1000);
+            }
+        }
     }
   
     const renderSquare = (i) => {
@@ -140,8 +168,8 @@ export default function Board () {
             </div>
             
             <div className="controls">
-                Update every <input defaultValue={interval} size="8"
-                    onChange={changeSimSpeed} /> ms
+                Speed 
+                <SpeedDropdown onChange={changeSimSpeed}/>
                 <br />
 
                 Size  of  grid   <input defaultValue={size} size="8"
@@ -149,11 +177,12 @@ export default function Board () {
                 <br />
 
                 {simulationRunning ?
-                    <button className="button"
-                        onClick={stopSim}>■ Stop</button> :
-                    <button className="button"
-                        onClick={playSim}>▶ Play</button>
+                    <Button variant="danger"
+                        onClick={stopSim}>■ Stop</Button> :
+                    <Button variant="success"
+                        onClick={playSim}>▶ Play</Button>
                 }
+
             </div>
         </div>
     );
