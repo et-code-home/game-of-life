@@ -5,6 +5,7 @@ import SpeedDropdown from './speedDropdown.js';
 
 export default function Board () {
     const [size, setSize] = useState(8);
+    const [sizeErrMsg, setSizeErrMsg] = useState('');
     const [squares, setSquares] = useState(Array(64).fill('white'));
     const [simulationRunning, setSimulationRunning] = useState(false);
     const [generation, setGeneration] = useState(0);
@@ -74,6 +75,7 @@ export default function Board () {
     }
 
     const playSim = () => {
+        setSizeErrMsg("")
         setSimulationRunning(true);
         buildNextGen();
     }
@@ -83,6 +85,7 @@ export default function Board () {
     }
 
     const resetSim = () => {
+        setSizeErrMsg("")
         stopSim();
         setTimeout(() => {    
             setSquares(Array(size*size).fill('white'));
@@ -92,22 +95,20 @@ export default function Board () {
 
     const changeGridSize = (event) => {
         const length = event.target.value;
-        if(length === "") {
-            console.log("Size cannot be empty")
-        }
-        else if(isNaN(length)) {
-            console.log("Please enter a number")
+        if(length === "" || isNaN(length)) {
+            setSizeErrMsg("Size cannot be empty, please enter a number")
         }
         else if(!Number.isInteger(Number(length))) {
-            console.log("Decimals are not allowed - please enter an integer");
+            setSizeErrMsg("Decimals are not allowed - please enter an integer");
         }
         else if(length < 5) {
-            console.log("Minimum board size is 5 x 5")
+            setSizeErrMsg("Minimum board size is 5 x 5")
         }
         else if(length > 16) {
-            console.log("Maximum board size is 16 x 16")
+            setSizeErrMsg("Maximum board size is 16 x 16")
         }
         else {
+            setSizeErrMsg("")
             setSize(Number(length));
             const cells = length * length;
             setSquares(Array(cells).fill('white'));
@@ -165,12 +166,16 @@ export default function Board () {
     return (
         <div className="top">
         <h2> Conway's Game of Life</h2>
-            <div className="status">{`Generation: ${generation}`}</div>
+            <div className="stat-gen">{`Generation: ${generation}`}</div>
 
-            <div>
+            <div className="stat-gen">
                 Size of grid <input type="number" size="8" value={size}
-                    onChange={changeGridSize} disabled={simulationRunning} min="8" max="16"/> 
+                    onChange={changeGridSize} disabled={simulationRunning} min="8" max="16" 
+                    /> 
             </div>
+
+            <div id="size-err-msg" className="stat-gen">{sizeErrMsg}</div>
+
             <br />
             <div className="board">
                 {createGrid( size )}

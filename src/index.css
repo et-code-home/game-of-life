@@ -13,8 +13,13 @@ ol, ul {
   display: table;
 }
 
-.status {
-  margin-bottom: 10px;
+.stat-gen {
+  margin: 0px 10px 0px 10px;
+  display: inline;
+}
+
+#size-err-msg {
+  color:crimson;
 }
 
 .square {
@@ -52,7 +57,6 @@ ol, ul {
 .rule-list {
   margin-left: 5px;
 }
-
 
 .about {
   margin-top: 50px;
