@@ -84,9 +84,10 @@ export default function Board () {
 
     const resetSim = () => {
         stopSim();
-        setSize(10);
-        setSquares(Array(100).fill('white'));
-        setGeneration(0);
+        setTimeout(() => {    
+            setSquares(Array(size*size).fill('white'));
+            setGeneration(0);
+        }, 1000);
     }
 
     const changeGridSize = (event) => {
@@ -107,7 +108,6 @@ export default function Board () {
             console.log("Maximum board size is 16 x 16")
         }
         else {
-            resetSim();
             setSize(length);
             const cells = length * length;
             setSquares(Array(cells).fill('white'));
@@ -166,7 +166,12 @@ export default function Board () {
         <div className="top">
         <h2> Conway's Game of Life</h2>
             <div className="status">{`Generation: ${generation}`}</div>
-            
+
+            <div>
+                Size of grid <input type="number" size="8" value={size}
+                    onChange={changeGridSize} disabled={simulationRunning} min="8" max="16"/> 
+            </div>
+            <br />
             <div className="board">
                 {createGrid( size )}
             </div>
@@ -175,11 +180,6 @@ export default function Board () {
                 Speed 
                 <SpeedDropdown onChange={changeSimSpeed}/>
                 <br />
-
-                Size of grid <input defaultValue={size} size="8"
-                    onChange={changeGridSize} value={size} disabled={simulationRunning}/> 
-                
-                <br /><br />
 
                 {simulationRunning ?
                     <Button variant="danger"

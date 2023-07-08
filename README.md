@@ -19,7 +19,8 @@ The Game of Life has become a popular topic in computer science and mathematics,
 
 ### Technologies Used
 
-![react](./imgs/react_logo.png)
+![react](./imgs/react_logo.png)  
+
 ![bootstrap](./imgs/bootstrap_logo.png)
 
 
