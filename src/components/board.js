@@ -4,29 +4,30 @@ import Square from './square.js';
 import SpeedDropdown from './speedDropdown.js';
 
 export default function Board () {
-    const [size, setSize] = useState(10);
-    const [squares, setSquares] = useState(Array(100).fill('white'));
+    const [size, setSize] = useState(8);
+    const [squares, setSquares] = useState(Array(64).fill('white'));
     const [simulationRunning, setSimulationRunning] = useState(false);
     const [generation, setGeneration] = useState(0);
     const [interval, setInterval] = useState(1000);
         
     const buildNextGen = () => {
         var newSquares = squares.slice();
+        let neighbors = [];
 
         for(var i=0; i<squares.length; i++ ) {
             var liveNeighbors = 0;
             var curStatus = squares[i];
 
             // check 8 neighbors in squares, count black (alive)
-            if(squares[i-size-1] === "black") { liveNeighbors++; } // top left
-            if(squares[i-size] === "black") { liveNeighbors++; }   // top
-            if(squares[i-size+1] === "black") { liveNeighbors++; } // top right
-            if(squares[i-1] === "black") { liveNeighbors++; } // left
-            if(squares[i+1] === "black") { liveNeighbors++; } // right
-            if(squares[i+size-1] === "black") { liveNeighbors++; } // bottom left
-            if(squares[i+size] === "black") { liveNeighbors++; } // bottom
-            if(squares[i+size+1] === "black") { liveNeighbors++; } // bottom right
-            
+            if(i-size >= 0 && i%size !== 0 && squares[i-size-1] === "black") { liveNeighbors++; } // top left
+            if(i-size >= 0 && squares[i-size] === "black") { liveNeighbors++; }   // top
+            if(i-size >= 0 && i%size !== size-1 && squares[i-size+1] === "black") { liveNeighbors++; } // top right
+            if(i%size !== 0 && squares[i-1] === "black") { liveNeighbors++; } // left
+            if(i%size !== size-1 && squares[i+1] === "black") { liveNeighbors++; } // right
+            if(i+size < size*size && i%size !== 0 && squares[i+size-1] === "black") { liveNeighbors++; } // bottom left
+            if(i+size < size*size && squares[i+size] === "black") { liveNeighbors++; } // bottom
+            if(i+size < size*size && i%size !== size-1 && squares[i+size+1] === "black") { liveNeighbors++; } // bottom right
+            neighbors.push(liveNeighbors)
             if( curStatus === "black" ) { // is alive, will neighbors kill it?
                 if( liveNeighbors === 2 || liveNeighbors === 3 ) {
                     newSquares[i] = 'black'; // staying alive!
@@ -44,7 +45,6 @@ export default function Board () {
                 }
             }
         }
-        
         // set Board's squares to newSquares
         setSquares(newSquares);
         setGeneration(generation + 1);
@@ -108,7 +108,7 @@ export default function Board () {
             console.log("Maximum board size is 16 x 16")
         }
         else {
-            setSize(length);
+            setSize(Number(length));
             const cells = length * length;
             setSquares(Array(cells).fill('white'));
         }
