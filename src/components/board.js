@@ -133,6 +133,7 @@ export default function Board () {
     const renderSquare = (i) => {
       return (
         <Square
+          key={i}
           bgColor={squares[i]}
           onClick={() => handleClick(i)}
         />
@@ -148,7 +149,7 @@ export default function Board () {
         //{renderSquare(n + numRows*num)} );
 
         return (
-            <div className="board-row">
+            <div className="board-row" key={num}>
                 {aRow}
             </div>
         );
