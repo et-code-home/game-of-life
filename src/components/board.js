@@ -2,22 +2,23 @@ import React, {useEffect, useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Square from './square.js';
 import SpeedDropdown from './speedDropdown.js';
+import ConfigurationDropdown from './configurationDropdown.js';
 
 export default function Board () {
-    const [size, setSize] = useState(8);
+    const [size, setSize] = useState(10);
     const [sizeErrMsg, setSizeErrMsg] = useState('');
-    const [squares, setSquares] = useState(Array(64).fill('white'));
+    const [squares, setSquares] = useState(Array(100).fill('white'));
     const [simulationRunning, setSimulationRunning] = useState(false);
     const [generation, setGeneration] = useState(0);
     const [interval, setInterval] = useState(1000);
         
     const buildNextGen = () => {
-        var newSquares = squares.slice();
+        const newSquares = squares.slice();
         let neighbors = [];
 
-        for(var i=0; i<squares.length; i++ ) {
-            var liveNeighbors = 0;
-            var curStatus = squares[i];
+        for(let i=0; i<squares.length; i++ ) {
+            let liveNeighbors = 0;
+            let curStatus = squares[i];
 
             // check 8 neighbors in squares, count black (alive)
             if(i-size >= 0 && i%size !== 0 && squares[i-size-1] === "black") { liveNeighbors++; } // top left
@@ -129,6 +130,47 @@ export default function Board () {
             }
         }
     }
+
+    const changeStartGrid = (event) => {
+        if(event.target.value) {
+            const newSquares = Array(size*size).fill('white');
+            switch(event.target.value){
+                case "stills":
+                    //TODO
+                    break;
+                case "beacon":
+                    //TODO
+                    break;
+                case "blinker":
+                    //TODO
+                    let middle;
+                    if(size % 2 === 0) {
+                        middle = Math.floor(size*size/2) - Math.floor(size/2);
+                    }
+                    else {
+                        middle =  Math.floor(size*size/2);
+                    }
+                    console.log(middle);
+                    newSquares[middle-1] = "black";
+                    newSquares[middle] = "black";
+                    newSquares[middle+1] = "black";
+                    setSquares(newSquares);
+                    break;
+                case "glider":
+                    //TODO
+                    break;
+                case "random":
+                    // random
+                    for(let i=0; i<size*size; i++) {
+                        newSquares[i] = Math.random() < 0.5 ? "black" : "white";
+                    }
+                    setSquares(newSquares);
+                    break;
+                default:
+                    setSquares(newSquares);
+            }
+        }
+    }
   
     const renderSquare = (i) => {
       return (
@@ -141,8 +183,8 @@ export default function Board () {
     }
   
     const createRows = (num, numRows) => {
-        var numbers = [size];
-        for(var i=0; i<size; i++) {
+        const numbers = [size];
+        for(let i=0; i<size; i++) {
             numbers[i] = i;
         }
         const aRow = numbers.map((n) => renderSquare(n + num*numRows));
@@ -156,8 +198,8 @@ export default function Board () {
     }
 
     const createGrid = (num) => {
-        var numbers = [size];
-        for(var i=0; i<size; i++) {
+        const numbers = [size];
+        for(let i=0; i<size; i++) {
             numbers[i] = i;
         }
         const allRows = numbers.map((n) => createRows(n, num));
@@ -185,8 +227,9 @@ export default function Board () {
             <div className="controls">
                 Speed 
                 <SpeedDropdown onChange={changeSimSpeed}/>
+                Configuration 
+                <ConfigurationDropdown onChange={changeStartGrid}/>
                 <br />
-
                 {simulationRunning ?
                     <Button variant="danger"
                         onClick={stopSim}>■ Stop</Button> :
